@@ -59,11 +59,6 @@ public class Runner {
 //            System.out.println(mothersWithTwin);
 //        }
 
-        Map<DayOfWeek, Integer> mostBirths = MotherAndChildrenService.findDayAndMostBirths(children);
-
-        for (Map.Entry<DayOfWeek, Integer> dayOfWeekIntegerEntry : mostBirths.entrySet()) {
-            System.out.println(dayOfWeekIntegerEntry);
-        }
 
 
     }
