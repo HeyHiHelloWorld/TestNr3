@@ -99,30 +99,6 @@ public class MotherAndChildrenService {
         return tallestKids;
     }
 
-    public static Map<DayOfWeek, Integer> findDayAndMostBirths(List<Child> children) {
-        Map<DayOfWeek, Integer> dayOfWeekCounter = new HashMap<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-        for (Child child : children) {
-            LocalDate birthDate = LocalDate.parse(child.getDateOfBirth(), formatter);
-            DayOfWeek dayOfWeek = birthDate.getDayOfWeek();
-            dayOfWeekCounter.put(dayOfWeek, dayOfWeekCounter.getOrDefault(dayOfWeek, 0) + 1);
-        }
-
-        DayOfWeek dayWithMostBirths = null;
-        int counter = 0;
-
-        for (Map.Entry<DayOfWeek, Integer> entry : dayOfWeekCounter.entrySet()) {
-            if (entry.getValue() > counter) {
-                counter = entry.getValue();
-                dayWithMostBirths = entry.getKey();
-            }
-        }
-        dayOfWeekCounter.put(dayWithMostBirths, counter);
-
-        return dayOfWeekCounter;
-    }
-
 
     public static List<Mother> findMothersWhoGaveBirthToBabiesOver4000g(List<Child> children) {
         Mother mother;
