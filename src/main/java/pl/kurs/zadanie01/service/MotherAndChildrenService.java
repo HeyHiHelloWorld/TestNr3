@@ -7,6 +7,10 @@ import pl.kurs.zadanie01.model.Mother;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.Key;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MotherAndChildrenService {
@@ -77,41 +81,86 @@ public class MotherAndChildrenService {
         return list;
     }
 
-    public static void findTallestBoyAndGirl(List<Child> children) {
+    public static List<Child> findTallestBoyAndGirl(List<Child> children) {
         Child tallestBoy = children.get(0);
         Child tallestGirl = children.get(0);
+        List<Child> tallestKids = new ArrayList<>();
 
         for (Child child : children) {
             if (child.getGender() == Gender.MALE && tallestBoy.getHeightInCm() < child.getHeightInCm()) {
                 tallestBoy = child;
+                tallestKids.add(tallestBoy);
             }
             if (child.getGender() == Gender.FEMALE && tallestGirl.getHeightInCm() < child.getHeightInCm()) {
                 tallestGirl = child;
+                tallestKids.add(tallestGirl);
             }
         }
-        System.out.println("Tallest boy: " + tallestBoy.getName() + ", height: " + tallestBoy.getHeightInCm());
-        System.out.println("Tallest girl: " + tallestGirl.getName() + ", height: " + tallestGirl.getHeightInCm());
+        return tallestKids;
     }
 
-    public static String findMothersWhoGaveBirthToBabiesOver4000g(List<Child> children) {
-        String motherNames = null;
+    public static Map<DayOfWeek, Integer> findDayAndMostBirths(List<Child> children) {
+        Map<DayOfWeek, Integer> dayOfWeekCounter = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        for (Child child : children) {
+            LocalDate birthDate = LocalDate.parse(child.getDateOfBirth(), formatter);
+            DayOfWeek dayOfWeek = birthDate.getDayOfWeek();
+            dayOfWeekCounter.put(dayOfWeek, dayOfWeekCounter.getOrDefault(dayOfWeek, 0) + 1);
+        }
+
+        DayOfWeek dayWithMostBirths = null;
+        int counter = 0;
+
+        for (Map.Entry<DayOfWeek, Integer> entry : dayOfWeekCounter.entrySet()) {
+            if (entry.getValue() > counter) {
+                counter = entry.getValue();
+                dayWithMostBirths = entry.getKey();
+            }
+        }
+        dayOfWeekCounter.put(dayWithMostBirths, counter);
+
+        return dayOfWeekCounter;
+    }
+
+
+    public static List<Mother> findMothersWhoGaveBirthToBabiesOver4000g(List<Child> children) {
+        Mother mother;
+        List<Mother> motherList = new ArrayList<>();
         for (Child child : children) {
             if (child.getWeightInG() > 4000 && child.getMother().getAge() < 25) {
-                motherNames += child.getMother().getName();
+                mother = child.getMother();
+                motherList.add(mother);
             }
         }
-        return motherNames;
+        return motherList;
     }
 
-    public static void getNamesAndBirthsOfGirlsWhoInheritedMotherNames(List<Child> children) {
-        List<String> temp = new ArrayList<>();
+    public static List<String> getNamesAndBirthsOfGirlsWhoInheritedMotherNames(List<Child> children) {
+        List<String> childrenNameAndBirthDateList = new ArrayList<>();
 
         for (Child child : children) {
             if (child.getGender() == Gender.FEMALE && child.getName().equals(child.getMother().getName())) {
-                temp.add(child.getName() + " " + child.getDateOfBirth());
+                childrenNameAndBirthDateList.add(child.getName() + " " + child.getDateOfBirth());
             }
         }
-        System.out.println(temp);
+        return childrenNameAndBirthDateList;
+    }
+
+    public static List<Mother> findMothersWhoGaveBirthToTwins(List<Child> children) {
+        Map<Mother, Integer> motherIntegerMap = new HashMap<>();
+        for (Child child : children) {
+            Mother mother = child.getMother();
+            motherIntegerMap.put(mother, motherIntegerMap.getOrDefault(mother, 0) + 1);
+        }
+
+        List<Mother> mothersWithTwins = new ArrayList<>();
+        for (Map.Entry<Mother, Integer> motherIntegerEntry : motherIntegerMap.entrySet()) {
+            if (motherIntegerEntry.getValue() > 1) {
+                mothersWithTwins.add(motherIntegerEntry.getKey());
+            }
+        }
+        return mothersWithTwins;
     }
 }
 

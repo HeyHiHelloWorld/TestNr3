@@ -4,6 +4,7 @@ import pl.kurs.zadanie01.model.Child;
 import pl.kurs.zadanie01.model.Mother;
 import pl.kurs.zadanie01.service.MotherAndChildrenService;
 
+import java.time.DayOfWeek;
 import java.util.*;
 
 public class Runner {
@@ -31,12 +32,38 @@ public class Runner {
         Map<Integer, Mother> motherMap = MotherAndChildrenService.getMotherMapFromFile("mamy.txt");
         List<Child> children = MotherAndChildrenService.getChildrenListFromFile("noworodki.txt", motherMap);
 
+//        MotherAndChildrenService.getNamesAndBirthsOfGirlsWhoInheritedMotherNames(children);
+//        List<Mother> motherList = new ArrayList<>(motherMap.values());
 
-        List<Mother> motherList = new ArrayList<>(motherMap.values());
+        List<Child> childList = MotherAndChildrenService.findTallestBoyAndGirl(children);
 
+        for (Child child : childList) {
+            System.out.println(child);
+        }
 
+//        List<Mother> mothers = MotherAndChildrenService.findMothersWhoGaveBirthToBabiesOver4000g(children);
+//
+//        for (Mother mother : mothers) {
+//            System.out.println(mother);
+//        }
 
+//        List<String> motherNames = MotherAndChildrenService.getNamesAndBirthsOfGirlsWhoInheritedMotherNames(children);
+//
+//        for (String motherName : motherNames) {
+//            System.out.println(motherName);
+//        }
 
+//        List<Mother> mothersWithTwins = MotherAndChildrenService.findMothersWhoGaveBirthToTwins(children);
+//
+//        for (Mother mothersWithTwin : mothersWithTwins) {
+//            System.out.println(mothersWithTwin);
+//        }
+
+        Map<DayOfWeek, Integer> mostBirths = MotherAndChildrenService.findDayAndMostBirths(children);
+
+        for (Map.Entry<DayOfWeek, Integer> dayOfWeekIntegerEntry : mostBirths.entrySet()) {
+            System.out.println(dayOfWeekIntegerEntry);
+        }
 
 
     }
