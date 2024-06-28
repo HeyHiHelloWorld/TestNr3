@@ -4,8 +4,8 @@ import pl.kurs.zadanie01.model.Child;
 import pl.kurs.zadanie01.model.Mother;
 import pl.kurs.zadanie01.service.MotherAndChildrenService;
 
-import java.time.DayOfWeek;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class Runner {
     public static void main(String[] args) {
